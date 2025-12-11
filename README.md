@@ -467,3 +467,8 @@
 ## 追加予定の機能
 - バケツスタック  
 - エンティティの体力表示  
+---
+
+## ダウンロード
+- [ダウンロード](https://github.com/Raoootokun/Simple-QOL/releases)
+
