@@ -1,9 +1,9 @@
 {
   "format_version": 2,
   "header": {
-    "name": "Simple QOL [ver1.0.0]",
+    "name": "Simple QOL [ver1.1.0]",
     "description": "対応バージョン: v1.21.130",
-    "version": [ 1, 0, 0 ],
+    "version": [ 1, 1, 0 ],
     "uuid": "88c1d11a-1b3d-4aa6-646d-df45034ddf8e",
     "min_engine_version": [ 1, 21, 130 ]
   },
