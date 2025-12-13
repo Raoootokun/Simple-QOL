@@ -8,7 +8,7 @@ export class Spawn {
      * @param {Player} player 
      */
     static run(player) {
-        const time = 30;
+        const time = 15;
 
         player.addEffect("resistance", time*20, { amplifier:255, showParticles:false });
     }

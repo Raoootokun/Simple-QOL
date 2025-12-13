@@ -32,15 +32,15 @@ export class Setting {
         const form = new ModalFormData();
         form.title(`設定`);
 
-        form.toggle(`範囲攻撃`, { defaultValue:sweepAttack });
-        form.toggle(`マインオール`, { defaultValue:mineall });
-        form.toggle(`カットオール`, { defaultValue:cutall });
-        form.toggle(`自動持ち替え`, { defaultValue:autotool });
-        form.toggle(`自動植え付け`, { defaultValue:autofarm });
-        form.toggle(`クイックドロップ`, { defaultValue:quickdrop });
-        form.toggle(`ダイナミックライト`, { defaultValue:dynamiclight });
-        form.toggle(`チャンク表示`, { defaultValue:chunk });
-        form.toggle(`村人のインベントリ操作`, { defaultValue:vinv });
+        form.toggle(`範囲攻撃`, { defaultValue:sweepAttack, });
+        form.toggle(`マインオール`, { defaultValue:mineall, });
+        form.toggle(`カットオール`, { defaultValue:cutall, });
+        form.toggle(`自動持ち替え`, { defaultValue:autotool, });
+        form.toggle(`自動植え付け`, { defaultValue:autofarm, });
+        form.toggle(`クイックドロップ`, { defaultValue:quickdrop, });
+        form.toggle(`ダイナミックライト`, { defaultValue:dynamiclight, });
+        form.toggle(`チャンク表示`, { defaultValue:chunk, });
+        form.toggle(`村人のインベントリ操作`, { defaultValue:vinv, });
 
         form.submitButton(`保存`);
         form.show(player).then(res => {

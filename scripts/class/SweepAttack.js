@@ -84,8 +84,9 @@ export class SweepAttack {
                     excludeTypes: [
                         "item",
                         "ender_crystal",
-                        "arror",
-                        "thrown_trident"
+                        "arrow",
+                        "thrown_trident",
+                        "player"
                     ],
                     excludeNames: [ this.player.name ]
                 })) {

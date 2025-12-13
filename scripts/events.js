@@ -11,11 +11,13 @@ import { Score } from "./class/Score";
 import { AutoFarm } from "./class/AutoFarm";
 import { Item } from "./class/Item";
 import { BlockSit } from "./class/BlockSit";
+import { PlayerBOT } from "./class/PlayerBOT";
 
 
 //playerSpawn
 world.afterEvents.playerSpawn.subscribe(ev => {
     const { player, initialSpawn } = ev;
+    if(PlayerBOT.isBOT(player))return;
 
     Spawn.run(player);
 
@@ -26,8 +28,9 @@ world.afterEvents.playerSpawn.subscribe(ev => {
 //playerSwingStart
 world.afterEvents.playerSwingStart.subscribe(ev => {
     const { player, heldItemStack, swingSource } = ev;
+    if(PlayerBOT.isBOT(player))return;
 
-    if(swingSource == "Attack") {
+    if(swingSource == "Attack" || swingSource == "Mine") {
         const swepAttc = new SweepAttack(player, heldItemStack);
         swepAttc.run();
     };
@@ -37,7 +40,9 @@ world.afterEvents.playerSwingStart.subscribe(ev => {
 //playerInteractWithEntity
 world.beforeEvents.playerInteractWithEntity.subscribe(ev => {
     const { player, target, itemStack, } = ev;
-    
+    if(PlayerBOT.isBOT(player))return;
+    if(PlayerBOT.isBOT(target))return ev.cancel = true;
+
     VillagerInv.initRun(ev);
     Score.runInteract(player, target);
 });
@@ -46,6 +51,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe(ev => {
 //playerInteractWithBlock
 world.beforeEvents.playerInteractWithBlock.subscribe(ev => {
     const { player, itemStack, block, blockFace, faceLocation, isFirstEvent } = ev;
+    if(PlayerBOT.isBOT(player))return;
     // if(!isFirstEvent)return;
 
     const autoFarm = new AutoFarm(player, itemStack, block, ev);
@@ -59,7 +65,8 @@ world.beforeEvents.playerInteractWithBlock.subscribe(ev => {
 //playerBreakBlock
 world.beforeEvents.playerBreakBlock.subscribe(ev => {
     const { player, itemStack, block, dimension } = ev;
-    
+    if(PlayerBOT.isBOT(player))return;
+
     const ikkatu = new Ikkatu(player, itemStack, block);
     ikkatu.run();
 
@@ -69,17 +76,10 @@ world.beforeEvents.playerBreakBlock.subscribe(ev => {
 
 world.afterEvents.playerPlaceBlock.subscribe(ev => {
     const { player, block, dimension } = ev;
+    if(PlayerBOT.isBOT(player))return;
 
     Score.runPlaceBlock(player, block);
-})
-
-
-//playerButtonInput
-world.afterEvents.playerButtonInput.subscribe(ev => {
-    const { player, button, newButtonState } = ev;
-
-    if(button == InputButton.Sneak && newButtonState == ButtonState.Released)Ikkatu.change(player);
-})
+});
 
 
 //itemUse
@@ -93,6 +93,7 @@ world.afterEvents.itemUse.subscribe(ev => {
 //entityHitBlock
 world.afterEvents.entityHitBlock.subscribe(ev => {
     const { hitBlock, hitBlockPermutation, damagingEntity, blockFace } = ev;
+    if(PlayerBOT.isBOT(damagingEntity))return;
 
     AutoTool.run(damagingEntity, hitBlock);
 });
@@ -111,12 +112,15 @@ world.afterEvents.entityHurt.subscribe(ev => {
     const { hurtEntity, damage, damageSource: { damagingEntity, damagingProjectile, cause }} = ev;
 
     Score.runHurt(hurtEntity, damagingEntity, damage);
+
+    PlayerBOT.hurt(hurtEntity);
 });
 
 
 //entityDie
 world.afterEvents.entityDie.subscribe(ev => {
     const { deadEntity, damageSource: { damagingEntity, damagingProjectile, cause }, } = ev;
+    if(PlayerBOT.isBOT(deadEntity))return;
 
     const dead = new Dead(deadEntity, damagingEntity, cause);
     dead.run();
@@ -128,6 +132,7 @@ world.afterEvents.entityDie.subscribe(ev => {
 //entitySpawn
 world.afterEvents.entitySpawn.subscribe(ev => {
     const { entity, cause } = ev;
+    if(PlayerBOT.isBOT(entity))return;
 
     if(entity.typeId == "minecraft:item")Item.spawn(entity);
 })

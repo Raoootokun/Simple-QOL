@@ -1,5 +1,5 @@
 import { world, system, ItemStack, Player, Block, LootTableManager, Dimension } from "@minecraft/server";
-import { log, Util } from "../lib/Util";
+import { log, random, Util } from "../lib/Util";
 import { playerDB } from "../database";
 import { Vector } from "../lib/Vector";
 import { ModalFormData } from "@minecraft/server-ui";
@@ -28,11 +28,12 @@ export class Ikkatu {
         if(this.itemStack.typeId.includes("_pickaxe"))type = "mineall";
         else if(this.itemStack.typeId.includes("_axe"))type = "cutall";
         if(!type)return;
+        this.type = type;
 
         //マインオールの場合
         if(type == "mineall" && (!this.block.typeId.includes("_ore") || !Ikkatu.getActive(this.player, "mineall")))return;
         //カットオールの場合
-        if(type == "cutall" && (!this.block.typeId.includes("_log") || !Ikkatu.getActive(this.player, "cutall")))return;
+        if(type == "cutall" &&  (!Ikkatu.woods.includes(this.block.typeId) || !Ikkatu.getActive(this.player, "cutall")))return;
        
         const blockId = this.block.typeId;
         system.run(() => {
@@ -52,7 +53,7 @@ export class Ikkatu {
                     //ブロックを取得
                     const block = this.dimension.getBlock(pos);
                     //IDが同じかどうか
-                    if(block?.typeId == blockId)arr.push(block);
+                    if(block?.typeId == blockId || (this.type == "mineall" && this.getOtherOreIds(blockId).includes(block.typeId)) )arr.push(block);
 
                     yield;
                 }
@@ -68,10 +69,17 @@ export class Ikkatu {
             
             Score.runBreakBlock(this.player, block);
 
+            //経験値オーブを召喚
+            const orbData = this.getOrb(block.typeId);
+            const orb = random(orbData.min, orbData.max, true);
+            if(this.data.autoCollect)this.player.addExperience(orb);
+            else for(let i=0; i<orb; i++) {
+                this.dimension.spawnEntity("xp_orb", block.location);
+            }
+            
+
             //ブロックを削除
             block.setType("air");
-
-            
 
             for(const itemStack of itemStacks) {
                 //自動回収
@@ -210,5 +218,100 @@ export class Ikkatu {
             staticDrop: false,
             autoCollect: false
         };
+    }
+
+    static get woods() {
+        return [
+           "minecraft:acacia_log",
+            "minecraft:birch_log",
+            "minecraft:cherry_log",
+            "minecraft:dark_oak_log",
+            "minecraft:jungle_log",
+            "minecraft:mangrove_log",
+            "minecraft:oak_log",
+            "minecraft:pale_oak_log",
+            "minecraft:spruce_log",
+            "minecraft:stripped_acacia_log",
+            "minecraft:stripped_birch_log",
+            "minecraft:stripped_cherry_log",
+            "minecraft:stripped_dark_oak_log",
+            "minecraft:stripped_jungle_log",
+            "minecraft:stripped_mangrove_log",
+            "minecraft:stripped_oak_log",
+            "minecraft:stripped_pale_oak_log",
+            "minecraft:stripped_spruce_log",
+
+            "minecraft:acacia_wood",
+            "minecraft:birch_wood",
+            "minecraft:cherry_wood",
+            "minecraft:dark_oak_wood",
+            "minecraft:jungle_wood",
+            "minecraft:mangrove_wood",
+            "minecraft:oak_wood",
+            "minecraft:pale_oak_wood",
+            "minecraft:spruce_wood",
+            "minecraft:stripped_acacia_wood",
+            "minecraft:stripped_birch_wood",
+            "minecraft:stripped_cherry_wood",
+            "minecraft:stripped_dark_oak_wood",
+            "minecraft:stripped_jungle_wood",
+            "minecraft:stripped_mangrove_wood",
+            "minecraft:stripped_oak_wood",
+            "minecraft:stripped_pale_oak_wood",
+            "minecraft:stripped_spruce_wood",
+        ]
+    }
+
+    getOtherOreIds(blockId) {
+        const obj = {
+            "minecraft:coal_ore": [ "minecraft:deepslate_coal_ore" ],
+            "minecraft:copper_ore": [ "minecraft:deepslate_copper_ore" ],
+            "minecraft:iron_ore": [ "minecraft:deepslate_iron_ore" ],
+            "minecraft:gold_ore": [ "minecraft:deepslate_gold_ore" ],
+            "minecraft:redstone_ore": [ "minecraft:deepslate_redstone_ore", "minecraft:lit_redstone_ore", "minecraft:lit_deepslate_redstone_ore" ],
+            "minecraft:lapis_ore": [ "minecraft:deepslate_lapis_ore" ],
+            "minecraft:diamond_ore": [ "minecraft:deepslate_diamond_ore" ],
+            "minecraft:emerald_ore": [ "minecraft:deepslate_emerald_ore" ],
+
+            "minecraft:deepslate_coal_ore": [ "minecraft:coal_ore" ],
+            "minecraft:deepslate_copper_ore": [ "minecraft:copper_ore" ],
+            "minecraft:deepslate_iron_ore": [ "minecraft:iron_ore" ],
+            "minecraft:deepslate_gold_ore": [ "minecraft:gold_ore" ],
+            "minecraft:deepslate_redstone_ore": [ "minecraft:redstone_ore", "minecraft:lit_redstone_ore", "minecraft:lit_deepslate_redstone_ore" ],
+            "minecraft:deepslate_lapis_ore": [ "minecraft:lapis_ore" ],
+            "minecraft:deepslate_diamond_ore": [ "minecraft:diamond_ore" ],
+            "minecraft:deepslate_emerald_ore": [ "minecraft:emerald_ore" ],
+
+            "minecraft:lit_redstone_ore": [ "minecraft:redstone_ore", "minecraft:deepslate_redstone_ore", "minecraft:lit_deepslate_redstone_ore" ],
+            "minecraft:lit_deepslate_redstone_ore": [ "minecraft:redstone_ore", "minecraft:deepslate_redstone_ore", "minecraft:lit_redstone_ore" ],
+        };
+
+        return obj[blockId] ?? [];
+    }
+
+    getOrb(blockId) {
+        const obj = {
+            "minecraft:coal_ore": { min: 0, max: 2 },
+            "minecraft:copper_ore": { min: 0, max: 0 },
+            "minecraft:iron_ore": { min: 0, max: 0 },
+            "minecraft:gold_ore": { min: 0, max: 0 },
+            "minecraft:redstone_ore": { min: 1, max: 5 },
+            "minecraft:lit_redstone_ore": { min: 1, max: 5 },
+            "minecraft:lapis_ore": { min: 2, max: 5 },
+            "minecraft:diamond_ore": { min: 3, max: 7 },
+            "minecraft:emerald_ore": { min: 3, max: 7 },
+
+            "minecraft:deepslate_coal_ore": { min: 0, max: 2 },
+            "minecraft:deepslate_copper_ore": { min: 0, max: 0 },
+            "minecraft:deepslate_iron_ore": { min: 0, max: 0 },
+            "minecraft:deepslate_gold_ore": { min: 0, max: 0 },
+            "minecraft:deepslate_redstone_ore": { min: 1, max: 5 },
+            "minecraft:lit_deepslate_redstone_ore": { min: 1, max: 5 },
+            "minecraft:deepslate_lapis_ore": { min: 2, max: 5 },
+            "minecraft:deepslate_diamond_ore": { min: 3, max: 7 },
+            "minecraft:deepslate_emerald_ore": { min: 3, max: 7 },
+        };
+
+        return obj[blockId] ?? { min: 0, max: 0 };
     }
 }

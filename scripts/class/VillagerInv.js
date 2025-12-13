@@ -34,7 +34,12 @@ export class VillagerInv {
      * インベントリフォームを表示
      */
     showMainForm() {
-        const rawtext = { rawtext:[ { text:`インベントリ: \n` } ]};
+        const healthCopm = this.villager.getComponent("health");
+        const max = healthCopm.defaultValue;
+        const current = healthCopm.currentValue;
+        const healthTxt = `体力: §c${Math.round(current)}§f/§c${Math.round(max)}§f`;
+
+        const rawtext = { rawtext:[ { text:`${healthTxt}\nインベントリ: \n` } ]};
 
         for(let i=0; i<this.container.size; i++) {
             const itemStack = this.container.getItem(i);

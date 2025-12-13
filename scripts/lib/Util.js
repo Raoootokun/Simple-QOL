@@ -4,9 +4,12 @@ import { Vector } from "./Vector";
  *  チャットに値を出力します
  * @param {*} value 
  * @param {boolean} organize 値を整頓して表示する
+ * @param {number} tick logを出すtick
  * @returns 
  */
-export function log(value, organize) {
+export function log(value, organize = false, tick = 1) {
+    if(system.currentTick % tick != 0)return;
+    
     try{
         if(typeof value == `string`)return world.sendMessage(value);
         if(organize)return world.sendMessage(`${JSON.stringify(value, null, 2)}`);

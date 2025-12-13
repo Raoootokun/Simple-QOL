@@ -175,22 +175,22 @@ export class Score {
 
         //スニーク回数追加
         if(player.isSneaking) {
-            if(!player.firstSneak) {
-                player.firstSneak = true;
+            if(!player.firstSneak_score) {
+                player.firstSneak_score = true;
                 Score.addScore(player, Score.id.sneak, 1);
             }
         }else {
-            if(player.firstSneak)delete player.firstSneak;
+            if(player.firstSneak_score)delete player.firstSneak_score;
         }
 
         //ジャンプ回数追加
         if(player.isJumping) {
-            if(!player.firstJump) {
-                player.firstJump = true;
+            if(!player.firstJump_score) {
+                player.firstJump_score = true;
                 Score.addScore(player, Score.id.jump, 1);
             }
         }else {
-            if(player.isOnGround && player.firstJump)delete player.firstJump;
+            if(player.isOnGround && player.firstJump_score)delete player.firstJump_score;
         }
 
         //歩いた距離
@@ -454,7 +454,7 @@ export class Score {
             }
 
             //プレイヤーキル数追加
-            if(deadIsPlayer)Score.addScore(damagingPlayer, Score.id.kill_animal, 1);
+            if(deadIsPlayer)Score.addScore(damagingPlayer, Score.id.kill_player, 1);
 
             //村人キル数追加
             if(deadPlayer.typeId == "minecraft:villager_v2")Score.addScore(damagingPlayer, Score.id.kill_villager, 1);

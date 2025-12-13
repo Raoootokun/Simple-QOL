@@ -1,4 +1,4 @@
-import { world, system, } from "@minecraft/server";
+import { world, system, BlockTypes, } from "@minecraft/server";
 import { log, Util } from "./lib/Util";
 import { WorldLoad } from "./lib/WorldLoad"
 
@@ -11,11 +11,13 @@ import { DynamicLight } from "./class/DynamicLight";
 import { Score } from "./class/Score";
 import { Ikkatu } from "./class/Ikkatu";
 import { BlockSit } from "./class/BlockSit";
+import { PlayerBOT } from "./class/PlayerBOT";
 
 import "./events"
 import "./customCommands"
 
-const VERSION = [ 1, 0, 0 ];
+
+export const VERSION = [ 1, 1, 0 ];
 WorldLoad.subscribe(() => {
     world.sendMessage(`[§bSimple QOL ver${VERSION.join(".")}§f] Reload`);
 
@@ -23,7 +25,12 @@ WorldLoad.subscribe(() => {
     Score.worldLoad();
 
     system.runInterval(() => {
-        for(const player of world.getPlayers()) {
+        //プレイヤーを取得
+        const allPlayers = world.getPlayers();
+        const players = allPlayers.filter(p => { if(!p.hasTag("isBOT"))return p; })
+        const bots = allPlayers.filter(p => { if(p.hasTag("isBOT"))return p; })
+
+        for(const player of players) {
             const actionbarArr = [];
 
             //体力表示
@@ -36,7 +43,7 @@ WorldLoad.subscribe(() => {
             const onlineSec = Math.round(Score.getScore(player, Score.id.online_time) / 20);
             const onLineTxt = `§8${QOL_Util.getTimeStr(onlineSec)}`;
 
-            player.nameTag = `${healthTxt}  ${onLineTxt}\n§f${player.name}`;
+            player.nameTag = `${healthTxt}\n§f${player.name}`;
 
             //アイテムの耐久値を表示
             Item.checkInventory(player);
@@ -57,6 +64,18 @@ WorldLoad.subscribe(() => {
             }
 
             //一括破壊
+            if(player.isSneaking) {
+                if(!player.isFirstSneak){ 
+                    player.isFirstSneak = true;
+                }
+            }else {
+                if(player.isFirstSneak) {
+                    delete player.isFirstSneak;
+                    Ikkatu.change(player);
+
+                }
+            }
+
             const isActiveMine = Ikkatu.getActive(player, "mineall");
             const isActiveCut = Ikkatu.getActive(player, "cutall");
             if(isActiveMine)actionbarArr.push(`§7-- §aマインオール発動中 §7--`);
@@ -82,7 +101,15 @@ WorldLoad.subscribe(() => {
             };
         };
 
+        for(const bot of bots) {
+            PlayerBOT.runTick(bot);
+        };
+
         //シートチェック
         BlockSit.checkSeats();
+
+        //プレイヤーの割合を取得
+        const botPer = (players.length / allPlayers.length) * 100;
+        world.gameRules.playersSleepingPercentage = botPer;
     });
 });

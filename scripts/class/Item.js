@@ -33,12 +33,12 @@ export class Item {
         const equipComp = player.getComponent("equippable");
         for(const slot of [ "Head", "Chest", "Legs", "Feet", "Offhand" ]) {
             const itemStack = equipComp.getEquipment(slot);
+            const slotItemStack = equipComp.getEquipmentSlot(slot);
             if(!itemStack)continue;
 
             const duraTxt = Item.getDuraText(itemStack);
             if(duraTxt) {
-                itemStack.setLore([ duraTxt ]);
-                equipComp.setEquipment(slot, itemStack);
+                slotItemStack.setLore([ duraTxt ]);
             }
         }
     }
@@ -144,7 +144,7 @@ export class Item {
         itemEntity.remove();
 
         const newItemEntity = dimension.spawnItem(newItemStack, pos);
-        newItemEntity.clearVelocity();
+        // newItemEntity.clearVelocity();
     }
 
 

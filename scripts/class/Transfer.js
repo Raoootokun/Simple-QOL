@@ -2,6 +2,7 @@ import { world, system, ItemStack, Player, } from "@minecraft/server";
 import { log, Util } from "../lib/Util";
 import { ModalFormData } from "@minecraft/server-ui";
 import { Item } from "./Item";
+import { PlayerBOT } from "./PlayerBOT";
 
 export class Transfer {
     
@@ -21,10 +22,11 @@ export class Transfer {
         if(target) {
             //送信先が自分の場合
             if(target.id == player.id)return player.sendMessage(`§cエラー: 自分にレベルを送信することはできません`);
+            if(PlayerBOT.isBOT(target))return player.sendMessage(`§cエラー: BOTにレベルを送信することはできません`);
             return Transfer.tryLevelSend(player, target, level);
         };
     
-        const targets = world.getPlayers({ excludeNames:[ player.name ] });
+        const targets = world.getPlayers({ excludeNames:[ player.name ], excludeTags:[ "isBOT" ] });
         if(targets.length == 0)return player.sendMessage(`§cエラー: プレイヤーが見つかりません`);
 
         const form = new ModalFormData();
@@ -71,10 +73,11 @@ export class Transfer {
         if(target) {
             //送信先が自分の場合
             if(target.id == player.id)return player.sendMessage(`§cエラー: 自分にアイテムを送信することはできません`);
+            if(PlayerBOT.isBOT(target))return player.sendMessage(`§cエラー: BOTにアイテムを送信することはできません`);
             return Transfer.tryItemSend(player, target, itemStack);
         };
 
-        const targets = world.getPlayers({ excludeNames:[ player.name ] });
+        const targets = world.getPlayers({ excludeNames:[ player.name ], excludeTags:[ "isBOT" ] });
         if(targets.length == 0)return player.sendMessage(`§cエラー: プレイヤーが見つかりません`);
 
         const form = new ModalFormData();

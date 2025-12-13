@@ -1,5 +1,6 @@
 import { world, system, CommandPermissionLevel, CustomCommandParamType, CustomCommandStatus, } from "@minecraft/server";
 import { log, Util } from "./lib/Util"
+import { VERSION } from "./main";
 import { Dead } from "./class/Dead";
 import { Navigation } from "./class/Navigation";
 import { Chunk } from "./class/Chunk";
@@ -14,10 +15,30 @@ import { Score } from "./class/Score";
 import { SweepAttack } from "./class/SweepAttack";
 import { Setting } from "./class/Setting";
 import { AutoFarm } from "./class/AutoFarm";
+import { PlayerBOT } from "./class/PlayerBOT";
+
 
 const PREFIX = "sq";
 
 const COMMAND_LIST = [
+    { //version
+        command: {
+            name: `${PREFIX}:` + "version",
+            description: "バージョンを表示します",
+            permissionLevel: CommandPermissionLevel.Any,
+        },
+        alias: [  ],
+        func: function(origin, ...args) {
+            system.run(() => {
+                const source = origin.sourceEntity;
+                source.sendMessage(`[§bSimple QOL§f] §fver${VERSION.join(".")}`)
+            });
+            return {
+                status: CustomCommandStatus.Success,
+            };
+        }
+    },
+
     { //sweepattack
         command: {
             name: `${PREFIX}:` + "sweepattack",
@@ -451,6 +472,25 @@ const COMMAND_LIST = [
                 const source = origin.sourceEntity;
 
                 Setting.showForm(source);
+            });
+            return {
+                status: CustomCommandStatus.Success,
+            };
+        }
+    },
+
+    { //bot
+        command: {
+            name: `${PREFIX}:` + "bot",
+            description: "BOTを召喚・切断します",
+            permissionLevel: CommandPermissionLevel.Any,
+        },
+        alias: [ ],
+        func: function(origin, ...args) {
+            system.run(() => {
+                const source = origin.sourceEntity;
+
+                PlayerBOT.showForm(source);
             });
             return {
                 status: CustomCommandStatus.Success,

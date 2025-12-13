@@ -18,6 +18,9 @@ export class AutoTool {
         if(!AutoTool.get(player))return;
 
         const itemStack = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
+        //武器(剣、槍、トライデント)の場合はなし
+        if(AutoTool.isWeapon(itemStack))return;
+
 
         const itemToolType = AutoTool.getToolType(itemStack);
         const blockToolType = AutoTool.getToolType(block);
@@ -93,6 +96,16 @@ export class AutoTool {
                 return;
             }
         }
+    }
+
+    /**
+     * 
+     * @param {ItemStack} itemStack 
+     * @returns 
+     */
+    static isWeapon(itemStack) {
+        if(!itemStack)return false;
+        return itemStack.typeId.includes("_sword") || itemStack.typeId.includes("_spear") || itemStack.typeId == "minecraft:trident";
     }
 
 

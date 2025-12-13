@@ -22,15 +22,14 @@ export class DynamicLight {
                 oldblock.setType("air");
                 DynamicLight.savePos(player, undefined);
             }
-        }
-
+        };
 
         if(!DynamicLight.get(player))return;
 
         const itemStack = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
         if(itemStack?.typeId != "minecraft:torch")return;
 
-        const pos = Vector.addsY(Vector.round(player.location), 1);
+        const pos = Vector.round(player.location);
 
         const block = player.dimension.getBlock(pos);
         //設置不可の場合
