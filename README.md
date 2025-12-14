@@ -459,6 +459,25 @@
 
 </details>
 
+
+
+
+
+<details>
+<summary><strong>BOT-Player</strong></summary>
+
+- BOT-Playerを召喚します。
+- BOTは召喚後、プレイヤーと同じように周囲のチャンクを読み込みます。
+- ダメージを受けると自動で退出します。
+
+
+**コマンド:**  
+- `/bot` --- BOT-Playerの召喚/退出/テレポートします。
+
+---
+
+</details>
+
 ---
 
 
