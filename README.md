@@ -12,6 +12,12 @@
 ---
 
 
+## ダウンロード
+- [ダウンロード](https://github.com/Raoootokun/Simple-QOL/releases)  
+
+---
+
+
 ## 内容
 
 <details>
@@ -486,9 +492,4 @@
 ## 追加予定の機能
 - バケツスタック  
 - エンティティの体力表示  
-- BOTプレイヤー
 ---
-
-## ダウンロード
-- [ダウンロード](https://github.com/Raoootokun/Simple-QOL/releases)
-
