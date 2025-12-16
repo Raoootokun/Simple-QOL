@@ -48,6 +48,7 @@ export class PlayerBOT {
      * @returns 
      */
     static hurt(simuPlayer) {
+        if(!simuPlayer || !simuPlayer.isValid)return;
         if(!PlayerBOT.isBOT(simuPlayer))return;
 
         const parent = PlayerBOT.getParent(simuPlayer);
@@ -78,7 +79,7 @@ export class PlayerBOT {
      * @param {Entity} entity 
      */
     static isBOT(entity) {
-        return entity.hasTag("isBOT");
+        return entity?.hasTag("isBOT");
     }
 
     /**

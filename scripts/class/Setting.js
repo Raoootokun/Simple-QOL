@@ -30,7 +30,7 @@ export class Setting {
         const vinv = VillagerInv.get(player);
 
         const form = new ModalFormData();
-        form.title(`設定`);
+        form.title(`個人設定`);
 
         form.toggle(`範囲攻撃`, { defaultValue:sweepAttack, });
         form.toggle(`マインオール`, { defaultValue:mineall, });

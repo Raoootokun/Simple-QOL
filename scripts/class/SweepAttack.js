@@ -6,7 +6,7 @@ import { QOL_Util } from "./QOL_Util";
 
 
 export class SweepAttack {
-    static cooldown = 10;
+    static cooldown = 12;
 
     constructor(player, itemStack) {
         /** @type {Player} */ this.player = player;

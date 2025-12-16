@@ -2,6 +2,7 @@ import { world, system, Player, ItemStack, Block, } from "@minecraft/server";
 import { log, Util } from "../lib/Util";
 import { playerDB } from "../database";
 import { QOL_Util } from "./QOL_Util";
+import { config } from "../config";
 
 export class AutoTool {
     
@@ -21,13 +22,12 @@ export class AutoTool {
         //武器(剣、槍、トライデント)の場合はなし
         if(AutoTool.isWeapon(itemStack))return;
 
-
         const itemToolType = AutoTool.getToolType(itemStack);
         const blockToolType = AutoTool.getToolType(block);
 
         //ツールが適正かどうか
         if(blockToolType == itemToolType)return;
-
+        
         AutoTool.setTool(player, blockToolType)
     };
 
@@ -64,7 +64,7 @@ export class AutoTool {
         const container = player.getComponent("inventory").container;
 
         //ホットバーを検索
-        for(let i=0; i<8; i++) {
+        for(let i=0; i<9; i++) {
             const itemStack = container.getItem(i);
             if(!itemStack)continue;
 
@@ -104,8 +104,7 @@ export class AutoTool {
      * @returns 
      */
     static isWeapon(itemStack) {
-        if(!itemStack)return false;
-        return itemStack.typeId.includes("_sword") || itemStack.typeId.includes("_spear") || itemStack.typeId == "minecraft:trident";
+        return config.no_autotool_item.includes(itemStack?.typeId);
     }
 
 

@@ -19,7 +19,7 @@ world.afterEvents.playerSpawn.subscribe(ev => {
     const { player, initialSpawn } = ev;
     if(PlayerBOT.isBOT(player))return;
 
-    Spawn.run(player);
+    Spawn.run(player, initialSpawn);
 
     Score.runJoin(player);
 });
@@ -110,10 +110,11 @@ world.afterEvents.entityHitEntity.subscribe(ev => {
 //entityHurt
 world.afterEvents.entityHurt.subscribe(ev => {
     const { hurtEntity, damage, damageSource: { damagingEntity, damagingProjectile, cause }} = ev;
+    if(PlayerBOT.isBOT(hurtEntity))return PlayerBOT.hurt(hurtEntity);
 
     Score.runHurt(hurtEntity, damagingEntity, damage);
 
-    PlayerBOT.hurt(hurtEntity);
+    
 });
 
 

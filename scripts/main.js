@@ -16,8 +16,7 @@ import { PlayerBOT } from "./class/PlayerBOT";
 import "./events"
 import "./customCommands"
 
-
-export const VERSION = [ 1, 1, 0 ];
+export const VERSION = [ 1, 1, 1 ];
 WorldLoad.subscribe(() => {
     world.sendMessage(`[§bSimple QOL ver${VERSION.join(".")}§f] Reload`);
 
@@ -27,8 +26,8 @@ WorldLoad.subscribe(() => {
     system.runInterval(() => {
         //プレイヤーを取得
         const allPlayers = world.getPlayers();
-        const players = allPlayers.filter(p => { if(!p.hasTag("isBOT"))return p; })
-        const bots = allPlayers.filter(p => { if(p.hasTag("isBOT"))return p; })
+        const players = allPlayers.filter(p => { if(!p.hasTag("isBOT"))return p; });
+        const bots = allPlayers.filter(p => { if(p.hasTag("isBOT"))return p; });
 
         for(const player of players) {
             const actionbarArr = [];

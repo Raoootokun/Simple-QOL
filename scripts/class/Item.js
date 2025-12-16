@@ -70,9 +70,9 @@ export class Item {
         if(!foodData)return;
 
         //食べた時の回復する満腹度
-        const nutrition = foodData.nutrition;
+        const nutrition = foodData.nutrition / 2;
         //食べた時に回復する隠し満腹度
-        const saturation = foodData.saturation;
+        const saturation = foodData.saturation / 2;
 
         let txt = `§r§7満腹度: `;
         if(nutrition > 6) {

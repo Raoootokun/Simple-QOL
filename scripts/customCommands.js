@@ -17,7 +17,6 @@ import { Setting } from "./class/Setting";
 import { AutoFarm } from "./class/AutoFarm";
 import { PlayerBOT } from "./class/PlayerBOT";
 
-
 const PREFIX = "sq";
 
 const COMMAND_LIST = [
@@ -26,8 +25,9 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "version",
             description: "バージョンを表示します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
         },
-        alias: [  ],
+        alias: [ "v" ],
         func: function(origin, ...args) {
             system.run(() => {
                 const source = origin.sourceEntity;
@@ -44,6 +44,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "sweepattack",
             description: "範囲攻撃の設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "sweepattack" },
             ],
@@ -66,6 +67,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "dead",
             description: "死亡情報を表示します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
         },
         alias: [ "d" ],
         func: function(origin, ...args) {
@@ -85,6 +87,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "reset",
             description: "死亡情報をリセットします",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
         },
         alias: [ ],
         func: function(origin, ...args) {
@@ -103,6 +106,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "navigation",
             description: "座標、プレイヤーをナビゲーションします",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             mandatoryParameters: [
                 { type: CustomCommandParamType.Enum, name: "sq:targetType" },
             ],
@@ -128,6 +132,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "item",
             description: "アイテムをプレイヤーに渡します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.PlayerSelector, name: "player" },
             ],
@@ -151,6 +156,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "level",
             description: "レベルをプレイヤーに渡します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             mandatoryParameters: [
                 { type: CustomCommandParamType.Integer, name: "amount" },
             ],
@@ -178,6 +184,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "chunk",
             description: "チャンク表示を設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "show" },
             ],
@@ -200,6 +207,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "dif",
             description: "難易度を設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Enum, name: "sq:difficulty" },
             ],
@@ -222,6 +230,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "autotool",
             description: "自動持ち替えを設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "autotool" },
             ],
@@ -244,6 +253,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "autofarm",
             description: "自動植え付けを設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "autofarm" },
             ],
@@ -266,11 +276,12 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "vinv",
             description: "村人のインベントリ操作を可能にするか設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "vinv" },
             ],
         },
-        alias: [ "v" ],
+        alias: [  ],
         func: function(origin, ...args) {
             system.run(() => {
                 const source = origin.sourceEntity;
@@ -288,6 +299,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "quickdrop",
             description: "クイックドロップを設定をします",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "quickdrop" },
             ],
@@ -310,6 +322,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "dynamiclight",
             description: "ダイナミックライトを設定をします",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "dynamiclight" },
             ],
@@ -332,6 +345,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "cutall",
             description: "カットールを設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "cutall" },
             ],
@@ -354,6 +368,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "mineall",
             description: "マインオールを設定します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Boolean, name: "mineall" },
             ],
@@ -376,6 +391,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "score",
             description: "スコアを表示します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.PlayerSelector, name: "target" },
             ],
@@ -399,6 +415,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "sidebar",
             description: "スコアをサイドバーに表示します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
             optionalParameters: [
                 { type: CustomCommandParamType.Enum, name: "sq:scoreId" },
             ],
@@ -422,6 +439,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "score_reset",
             description: "スコアをリセットします",
             permissionLevel: CommandPermissionLevel.GameDirectors,
+            cheatsRequired: false,
             mandatoryParameters: [
                 { type: CustomCommandParamType.PlayerSelector, name: "target" },
             ],
@@ -445,6 +463,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "score_init",
             description: "スコアオブジェクトを初期化します",
             permissionLevel: CommandPermissionLevel.GameDirectors,
+            cheatsRequired: false,
         },
         alias: [ ],
         func: function(origin, ...args) {
@@ -465,6 +484,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "setting",
             description: "各機能の設定をします",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
         },
         alias: [ ],
         func: function(origin, ...args) {
@@ -484,6 +504,7 @@ const COMMAND_LIST = [
             name: `${PREFIX}:` + "bot",
             description: "BOTを召喚・切断します",
             permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
         },
         alias: [ ],
         func: function(origin, ...args) {
