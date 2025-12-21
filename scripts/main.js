@@ -16,7 +16,7 @@ import { PlayerBOT } from "./class/PlayerBOT";
 import "./events"
 import "./customCommands"
 
-export const VERSION = [ 1, 1, 1 ];
+export const VERSION = [ 1, 1, 2 ];
 WorldLoad.subscribe(() => {
     world.sendMessage(`[§bSimple QOL ver${VERSION.join(".")}§f] Reload`);
 
@@ -106,9 +106,5 @@ WorldLoad.subscribe(() => {
 
         //シートチェック
         BlockSit.checkSeats();
-
-        //プレイヤーの割合を取得
-        const botPer = (players.length / allPlayers.length) * 100;
-        world.gameRules.playersSleepingPercentage = botPer;
     });
 });
