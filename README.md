@@ -1,7 +1,7 @@
 # Simple QOL  
 ![GitHub Release](https://img.shields.io/github/v/release/Raoootokun/Simple-QOL)  
 バニラのサバイバルをほんの少しだけ便利にします。     
-対応バージョン: `v1.21.130`  
+対応バージョン: `v1.21.131`  
 
 ---
 
