@@ -5,6 +5,8 @@ import { playerDB } from "../database";
 import { QOL_Util } from "./QOL_Util";
 
 
+import { debugDrawer, DebugText, DebugLine } from "@minecraft/debug-utilities";
+
 export class Chunk {
     /**
      * @param {Player} player 
@@ -13,11 +15,25 @@ export class Chunk {
         if(system.currentTick % 20 != 0)return;
         if(player.location.y < -64 || player.location.y > 320)return;
 
+        //シェイプを削除
+        if(player.chunkShapes != undefined) {
+            for(const shape of player.chunkShapes) {
+                debugDrawer.removeShape(shape);
+            }
+        };
+
         const showChunk = playerDB.get(player, "showChunk");
         if(!showChunk)return;
 
-        //パーティクルを表示
-        Chunk.spawnChunkBorderParticles(player);
+        //シェイプを設定
+        Chunk.setAllShape(player);
+    
+        //シェイプを表示
+        if(player.chunkShapes != undefined) {
+            for(const shape of player.chunkShapes) {
+                debugDrawer.addShape(shape);
+            }
+        };
     }
 
 
@@ -39,7 +55,9 @@ export class Chunk {
     }
 
 
-    static spawnChunkBorderParticles(player, spacing = 1) {
+    static setAllShape(player, spacing = 2) {
+        player.chunkShapes = [];
+
         // チャンク最小座標を取得
         const pos = Vector.round(player.location);
         const { minX, minZ } = Chunk.getChunkMinPos(pos);
@@ -49,25 +67,33 @@ export class Chunk {
 
         // X方向の辺（南北）
         for (let x = minX; x <= maxX; x += spacing) {
-            Chunk.spawnParticle(player, { x:x, y:pos.y, z:minZ }); // 南側
-            Chunk.spawnParticle(player, { x:x, y:pos.y, z:maxZ }); // 北側
+            Chunk.setShape(player, { x:x, y:pos.y, z:minZ }); // 南側
+            Chunk.setShape(player, { x:x, y:pos.y, z:maxZ }); // 北側
         }
 
         // Z方向の辺（西東）
         for (let z = minZ + spacing; z < maxZ; z += spacing) { // +spacingで角の重複防止
-            Chunk.spawnParticle(player, { x:minX, y:pos.y, z:z }); // 西側
-            Chunk.spawnParticle(player, { x:maxX, y:pos.y, z:z }); // 東側
+            Chunk.setShape(player, { x:minX, y:pos.y, z:z }); // 西側
+            Chunk.setShape(player, { x:maxX, y:pos.y, z:z }); // 東側
         }
     }
 
-    static spawnParticle(player, pos) {
-        const molang = new MolangVariableMap();
-        molang.setColorRGB("variable.color", { red:1.0, green:0.3, blue:0.0 });
-        molang.setVector3("variable.direction", { x:0, y:0, z:0 });
 
-        try{
-            player.spawnParticle("minecraft:wax_particle", { x:pos.x+0.0, y:pos.y+0.2, z:pos.z+0.0 }, molang)
-        }catch(e){};
+    static setShape(player, pos) {
+        const shape = new DebugLine({
+            x: pos.x,
+            y: -64,
+            z: pos.z,
+        }, {
+            x: pos.x,
+            y: 320,
+            z: pos.z,
+        });
+        shape.color = { red:1, green:1, blue:0 };
+        shape.visibleTo = [ player ];
+        
+        if(player.chunkShapes == undefined) player.chunkShapes = [];
+        player.chunkShapes.push(shape);
     }
 
 

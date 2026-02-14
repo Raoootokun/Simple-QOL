@@ -79,6 +79,7 @@ export class PlayerBOT {
      * @param {Entity} entity 
      */
     static isBOT(entity) {
+        if(!entity.isValid)return false;
         return entity?.hasTag("isBOT");
     }
 

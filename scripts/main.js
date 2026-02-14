@@ -16,7 +16,7 @@ import { PlayerBOT } from "./class/PlayerBOT";
 import "./events"
 import "./customCommands"
 
-export const VERSION = [ 1, 1, 2 ];
+export const VERSION = [ 1, 2, 0 ];
 WorldLoad.subscribe(() => {
     world.sendMessage(`[§bSimple QOL ver${VERSION.join(".")}§f] Reload`);
 
@@ -107,4 +107,5 @@ WorldLoad.subscribe(() => {
         //シートチェック
         BlockSit.checkSeats();
     });
+
 });
