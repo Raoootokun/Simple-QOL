@@ -163,6 +163,9 @@ export class Score {
      * @param {Player} player 
      */
     static runTick(player) {
+        //スペクテイターの場合は反映されないように
+        if(Util.isSpectator(player))return;
+        
         //プレイ時間
         Score.addScore(player, Score.id.playtime, 1);
         const playtime = Score.getScore(player, Score.id.playtime);
@@ -294,6 +297,9 @@ export class Score {
      * @param {Player} player 
      */
     static runJoin(player) {
+        //スペクテイターの場合は反映されないように
+        if(Util.isSpectator(player))return;
+        
         //初ログインなら
         const login = Score.getScore(player, Score.id.logout);
         if(login == 0)Score.resetAllScore(player);

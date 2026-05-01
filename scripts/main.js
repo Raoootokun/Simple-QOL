@@ -15,8 +15,9 @@ import { PlayerBOT } from "./class/PlayerBOT";
 
 import "./events"
 import "./customCommands"
+import { SpecAssist } from "./class/Spectator";
 
-export const VERSION = [ 1, 2, 0 ];
+export const VERSION = [ 1, 3, 0 ];
 WorldLoad.subscribe(() => {
     world.sendMessage(`[§bSimple QOL ver${VERSION.join(".")}§f] Reload`);
 
@@ -98,6 +99,8 @@ WorldLoad.subscribe(() => {
             }else {
                 player.onScreenDisplay.setActionBar("§1");
             };
+
+            SpecAssist.runTick(player);
         };
 
         for(const bot of bots) {
@@ -109,3 +112,5 @@ WorldLoad.subscribe(() => {
     });
 
 });
+
+// import "./TestForm"

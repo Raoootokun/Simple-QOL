@@ -12,6 +12,7 @@ import { AutoFarm } from "./class/AutoFarm";
 import { Item } from "./class/Item";
 import { BlockSit } from "./class/BlockSit";
 import { PlayerBOT } from "./class/PlayerBOT";
+import { Portal } from "./class/Portal";
 
 
 //playerSpawn
@@ -136,4 +137,11 @@ world.afterEvents.entitySpawn.subscribe(ev => {
     if(PlayerBOT.isBOT(entity))return;
 
     if(entity.typeId == "minecraft:item")Item.spawn(entity);
+})
+
+
+world.afterEvents.playerDimensionChange.subscribe(ev => {
+    const { player, fromDimension, fromLocation, toDimension, toLocation } = ev;
+
+    Portal.run(ev);    
 })

@@ -16,6 +16,7 @@ import { SweepAttack } from "./class/SweepAttack";
 import { Setting } from "./class/Setting";
 import { AutoFarm } from "./class/AutoFarm";
 import { PlayerBOT } from "./class/PlayerBOT";
+import { SpecAssist } from "./class/Spectator";
 
 const PREFIX = "sq";
 
@@ -519,7 +520,25 @@ const COMMAND_LIST = [
         }
     },
 
+    { //tlp
+        command: {
+            name: `${PREFIX}:` + "tlp",
+            description: "プレイヤーにテレポートします",
+            permissionLevel: CommandPermissionLevel.Any,
+            cheatsRequired: false,
+        },
+        alias: [ ],
+        func: function(origin, ...args) {
+            system.run(() => {
+                const source = origin.sourceEntity;
 
+                SpecAssist.showTeleportForm(source);
+            });
+            return {
+                status: CustomCommandStatus.Success,
+            };
+        }
+    },
 ];
 
 const ENUM_LIST = {
